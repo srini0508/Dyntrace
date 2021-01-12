@@ -2,9 +2,6 @@ import requests,json
 requests.packages.urllib3.add_stderr_logger()
 agId = []
 import sys
-print ("start")
-print ( sys.argv[1])
-print ("end")
 url="https://plg31677.live.dynatrace.com/api/v2/activeGates/"
 api='Api-Token' + " " + sys.argv[1]
 print(api)
