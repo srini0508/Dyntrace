@@ -1,0 +1,23 @@
+- name: run ssm doc
+  hosts: localhost
+  vars:
+    runbookName: "r1"
+    myAutomationAccount: "demorun"
+    resourceGroup: "rg1"
+    region: "us-east-1"
+  tasks:
+      - name: Get runbbok details
+        command: az automation runbook show --automation-account-name "{{ myAutomationAccount }}" --resource-group "{{ resourceGroup }}" --name "{{ runbookName }}"
+        register: runbookdetails
+
+      - name: print SSM Doc details
+        debug:
+            var: runbookdetails.stdout
+
+      - name: Execute runbook
+        command: az automation runbook start  --automation-account-name "{{ myAutomationAccount }}" --resource-group "{{ resourceGroup }}" --name "{{ runbookName }}"
+        register: runbook
+
+      - name: print runbook execution details
+        debug:
+            var: runbook.stdout

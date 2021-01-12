@@ -1,0 +1,33 @@
+- name: run ssm doc
+  hosts: localhost
+  vars:
+    pList: "{{ lookup('file', 'parameters.json') | from_json }}"
+    ssmdocumentName: "TestSSMdocument"
+    region: "us-east-1"
+  tasks: 
+
+
+
+      - name: lookup ssm parameter store in the current region
+        debug: msg="{{ lookup('aws_ssm', 'access_code',region='us-east-1' ) }}"
+      - name: get document
+        command: aws ssm describe-document  --name "{{ ssmdocumentName }}" --region "{{ region }}" 
+        register: ssmdocdetails
+
+      - name: start ssm execution
+        command: aws ssm start-automation-execution  --document-name "{{ ssmdocumentName }}" --region "{{ region }}"
+        register: result
+        
+      - name: print parameters
+        debug: 
+          msg: "{{ pList }}"
+
+      - name: print SSM Doc details
+        debug:
+          var: ssmdocdetails.stdout
+
+
+      - name: print SSM Status
+        debug:
+          var: result.stdout
+          

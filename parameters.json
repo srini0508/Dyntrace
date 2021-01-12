@@ -1,0 +1,3 @@
+{
+  "AutomationAssumeRole": "arn:aws:iam::182805396674:role/ssmrole" 
+}
