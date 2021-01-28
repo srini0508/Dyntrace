@@ -15,6 +15,7 @@
        args:
          executable: python3
        register: result_status
+       when: ansible_distribution == "Amazon" or ansible_os_family == "Redhat"
 
      - debug:
         var: result_status
