@@ -6,18 +6,21 @@
     resourceGroup: "rg1"
     region: "us-east-1"
   tasks:
-      - name: Get runbbok details
-        command: az automation runbook show --automation-account-name "{{ myAutomationAccount }}" --resource-group "{{ resourceGroup }}" --name "{{ runbookName }}"
-        register: runbookdetails
+    - name: Run when OS is RedHat or Amazon
+      block:
+        - name: Get runbbok details
+          command: az automation runbook show --automation-account-name "{{ myAutomationAccount }}" --resource-group "{{ resourceGroup }}" --name "{{ runbookName }}"
+          register: runbookdetails
 
-      - name: print SSM Doc details
-        debug:
-            var: runbookdetails.stdout
+        - name: print SSM Doc details
+          debug:
+             var: runbookdetails.stdout
 
-      - name: Execute runbook
-        command: az automation runbook start  --automation-account-name "{{ myAutomationAccount }}" --resource-group "{{ resourceGroup }}" --name "{{ runbookName }}"
-        register: runbook
+        - name: Execute runbook
+          command: az automation runbook start  --automation-account-name "{{ myAutomationAccount }}" --resource-group "{{ resourceGroup }}" --name "{{ runbookName }}"
+          register: runbook
 
-      - name: print runbook execution details
-        debug:
-            var: runbook.stdout
+        - name: print runbook execution details
+          debug:
+             var: runbook.stdout
+      when: ansible_distribution == "Amazon" or ansible_os_family== "RedHat" 
